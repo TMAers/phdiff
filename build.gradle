@@ -1,0 +1,72 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.1.3-2'
+        sonarApiVersion = '5.6'
+        commonsLangVersion = '2.6'
+    }
+    repositories {
+      jcenter()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+    }
+}
+
+plugins {
+  id "com.iadams.sonar-packaging" version "1.0-RC1"
+}
+apply plugin: 'kotlin'
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+targetCompatibility = 1.8
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+  compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
+  compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+
+  provided "org.sonarsource.sonarqube:sonar-plugin-api:${sonarApiVersion}"
+  compile("org.apache.httpcomponents:httpclient:4.5.3") {
+    exclude group: 'commons-logging', module: 'commons-logging'
+  }
+  compile "org.json:json:20170516"
+  compile "commons-io:commons-io:2.5"
+
+  compile "commons-lang:commons-lang:${commonsLangVersion}"
+
+  testCompile("org.sonarsource.sonarqube:sonar-testing-harness:${sonarApiVersion}")
+  testCompile("junit:junit:4.11")
+  testCompile("org.jetbrains.kotlin:kotlin-test:${kotlinVersion}")
+}
+
+sonarPackaging {
+  serverUrl = 'http://192.168.99.225:9000'
+  pluginKey = 'example'
+  pluginClass = 'io.nthienan.phdiff.PhabricatorDifferentialPlugin'
+  pluginName = 'Sonar Phabricator Differential Plugin.'
+  pluginDescription = 'Auto add sonar comments into phabricator server'
+  pluginLicense = 'Apache License, Version 2.0'
+  pluginUrl = 'https://github.com/TMAers/phdiff'
+  pluginDevelopers = 'An Nguyen'
+  organization{
+    name = 'TMA Solutions'
+    url = 'http://www.tmasolutions.com'
+  }
+  skipDependenciesPackaging = false
+  useChildFirstClassLoader = false
+  basePlugin = ''
+  requirePlugins = 'org.sonarsource.sonarqube:sonar-plugin-api:5.6'
+}
+

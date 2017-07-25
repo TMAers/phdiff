@@ -1,6 +1,5 @@
 package io.nthienan.phdiff.report;
 
-import org.apache.commons.lang.StringUtils;
 import org.sonar.api.CoreProperties;
 import org.sonar.api.batch.BatchSide;
 import org.sonar.api.batch.InstantiationStrategy;
@@ -10,6 +9,7 @@ import org.sonar.api.config.Settings;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import org.sonar.api.internal.apachecommons.lang.StringUtils;
 
 /**
  * Support Remarkup format <br\>

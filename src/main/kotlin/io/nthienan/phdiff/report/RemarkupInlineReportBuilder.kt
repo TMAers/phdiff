@@ -15,19 +15,19 @@ class RemarkupInlineReportBuilder(val remarkupUtils: RemarkupUtils) : InlineRepo
     private var issue: PostJobIssue? = null
 
     override fun issue(issue: PostJobIssue?): InlineReportBuilder {
-        issue?.let { this.issue = issue }
+        this.issue = issue
         return this
     }
 
     override fun build(): String {
-        var str = ""
-        issue?.let { issue ->
-            str = StringBuilder().append(remarkupUtils.icon(issue.severity()))
+        val issue = this.issue
+        return if (issue!=null) {
+            StringBuilder().append(remarkupUtils.icon(issue.severity()))
                 .append(" ").append(remarkupUtils.message(issue.message()))
                 .append(" ").append(remarkupUtils.rule(issue.ruleKey().toString()))
                 .toString()
+        } else {
+            ""
         }
-        return str
-
     }
 }
