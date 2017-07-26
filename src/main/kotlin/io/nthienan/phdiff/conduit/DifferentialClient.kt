@@ -24,7 +24,7 @@ class DifferentialClient(val conduitClient: ConduitClient) {
      */
     @Throws(IOException::class, ConduitException::class)
     fun postComment(revisionID: String, message: String, silent: Boolean, action: String): JSONObject {
-        var params = JSONObject()
+        val params = JSONObject()
             .put("revision_id", revisionID)
             .put("action", action)
             .put("message", message)

@@ -22,18 +22,20 @@ class ConduitClient(var url: String, var token: String) {
 
     fun perform(action: String, params: JSONObject): JSONObject {
         val httpClient = HttpClientBuilder.create().build()
-        val postRequest = makeRequest(action, params)
-        val response = httpClient.execute(postRequest)
+
+        val response = httpClient.execute(makeRequest(action, params))
         val responseBody = IOUtils.toString(response.entity.content, Charsets.UTF_8)
+
         LOG.debug("$url responses: $responseBody")
+
         if (response.statusLine.statusCode != HttpStatus.SC_OK) {
             throw ConduitException(responseBody, response.statusLine.statusCode)
         }
+
         val result = JSONObject(responseBody)
-        val errorInfo = result.get("error_info").toString()
-        if (!(result.get("error_code").toString().equals("null")
-            && errorInfo.equals("null"))) {
-            throw ConduitException(errorInfo, response.statusLine.statusCode)
+        val errorInfo = result.get("error_info")
+        if (result.get("error_code") != null || errorInfo != null) {
+            throw ConduitException(errorInfo.toString(), response.statusLine.statusCode)
         }
         return result
     }
@@ -47,8 +49,8 @@ class ConduitClient(var url: String, var token: String) {
 
         val formData = ArrayList<NameValuePair>()
         formData.add(BasicNameValuePair("params", params.toString()))
-        val entity = UrlEncodedFormEntity(formData, "UTF-8")
-        postRequest.setEntity(entity)
+
+        postRequest.entity = UrlEncodedFormEntity(formData, "UTF-8")
 
         return postRequest
     }
