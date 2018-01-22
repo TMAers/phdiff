@@ -1,4 +1,4 @@
-# Phabricator Differential Plugin 
+# Phabricator Differential Sonar Plugin 
 [![Build Status](https://api.travis-ci.org/thienan93/phdiff.svg?branch=master)](https://travis-ci.org/thienan93/phdiff)
 
 The Phabricator Differential plugin provides integration with Phabricator. It allows SonarQube to analytic and report issues on differential revision without pushing results to SonarQube. Any issues that are found are published as comments on the revision.
@@ -10,6 +10,13 @@ The plugin performs the following operations:
 2. Add an inline comment for each issue
 
 ![inline-comments.png](docs/images/inline-comments.png)
+
+### Installation
+**phdiff** is not published to Update Center yet, so follow these steps to install:
+- Clone this repo
+- Run: `mvn clean package`
+- Copy `target/phdiff-<version>.jar` to `$SONAR_HOME/extensions/plugins`
+- Restart SonarQube
 
 ### Configuration
 - **Requirements**
@@ -49,7 +56,7 @@ The plugin performs the following operations:
 - **Jenkins job**
 1. Navigate to the Jenkins job you want to integrate with Phabricator.
 2. Click the **Configure** button.
-3. Click the **Add Parameter** button and select **String Parrameter**.
+3. Click the **Add Parameter** button and select **String Parameter**.
 4. Enter `DIFF_ID` in the **Name** field of the parameter.
 5. Navigate to the **Build** section.
 6. Click the **Add build step** button and select Maven or Gradle.
